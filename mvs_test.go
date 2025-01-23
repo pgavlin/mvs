@@ -528,15 +528,7 @@ func Test(t *testing.T) {
 			fns = append(fns, func(t *testing.T) {
 				list, err := Upgrade(context.Background(), m(kf[1]), reqs, ms(kf[2:])...)
 				if err == nil {
-					// Copy the reqs map, but substitute the upgraded requirements in
-					// place of the target's original requirements.
-					upReqs := make(reqsMap, len(reqs))
-					for m, r := range reqs {
-						upReqs[m] = r
-					}
-					upReqs[m(kf[1])] = list
-
-					list, err = Req(context.Background(), m(kf[1]), nil, upReqs)
+					list, err = ReqList(context.Background(), m(kf[1]), list, nil, reqs)
 				}
 				checkList(t, key, list, err, val)
 			})

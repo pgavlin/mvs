@@ -190,7 +190,13 @@ func Req(ctx context.Context, mainModule module.Version, base []string, reqs Req
 	if err != nil {
 		return nil, err
 	}
+	return ReqList(ctx, mainModule, list, base, reqs)
+}
 
+// ReqList returns the minimal requirement list for the given build list,
+// with the constraint that all module paths listed in base must
+// appear in the returned list.
+func ReqList(ctx context.Context, mainModule module.Version, list []module.Version, base []string, reqs Reqs) ([]module.Version, error) {
 	// Note: Not running in parallel because we assume
 	// that list came from a previous operation that paged
 	// in all the requirements, so there's no I/O to overlap now.
